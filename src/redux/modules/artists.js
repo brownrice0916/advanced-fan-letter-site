@@ -1,47 +1,26 @@
+import { createSlice } from "@reduxjs/toolkit";
 import { getLocalStorage, saveLocalStorage } from "common/common";
 import { v4 as uuidv4 } from "uuid";
 
 const { datas } = require("shared/artists");
 
-const ADD_FAN_LETTER = "ADD_FAN_LETTER";
-const EDIT_FAN_LETTER = "EDIT_FAN_LETTER";
-const DELETE_FAN_LETTER = "DELETE_FAN_LETTER";
-
-export const addFanLetter = (currentArtistId, nickname, content, writedTo) => {
-  return {
-    type: ADD_FAN_LETTER,
-    payload: { currentArtistId, nickname, content, writedTo },
-  };
-};
-
-export const editFanLetter = (currentArtistId, fanLetterId, content) => {
-  return {
-    type: EDIT_FAN_LETTER,
-    payload: { currentArtistId, fanLetterId, content },
-  };
-};
-
-export const deleteFanLetter = (currentArtistId, fanLetterId) => {
-  return {
-    type: DELETE_FAN_LETTER,
-    payload: { currentArtistId, fanLetterId },
-  };
-};
-
-const artists = getLocalStorage("artists")
+const initialState = getLocalStorage("artists")
   ? JSON.parse(getLocalStorage("artists"))
   : datas;
 
-const artistsReducer = (state = artists, action) => {
-  switch (action.type) {
-    case ADD_FAN_LETTER:
+const artistsSlice = createSlice({
+  name: "artists",
+  initialState,
+  reducers: {
+    addFanLetter: (state, action) => {
       const newFanLetter = {
         id: uuidv4(),
         nickname: action.payload.nickname,
         content: action.payload.content,
         writedTo: action.payload.writedTo,
-        createdAt: new Date(),
+        createdAt: new Date().toString(),
       };
+      console.log(action.payload);
       const fanLetterAddedArtists = state.map((artist) => {
         if (artist.id === action.payload.currentArtistId) {
           return {
@@ -52,12 +31,13 @@ const artistsReducer = (state = artists, action) => {
 
         return artist;
       });
+      console.log(fanLetterAddedArtists);
 
       saveLocalStorage("artists", fanLetterAddedArtists);
 
       return fanLetterAddedArtists;
-
-    case EDIT_FAN_LETTER:
+    },
+    editFanLetter: (state, action) => {
       const fanLetterEditedArtists = state.map((artist) =>
         artist.id === action.payload.currentArtistId
           ? {
@@ -73,10 +53,9 @@ const artistsReducer = (state = artists, action) => {
 
       saveLocalStorage("artists", fanLetterEditedArtists);
       return fanLetterEditedArtists;
-
-    case DELETE_FAN_LETTER:
-      const fanLetterDeletedArtists = artists.map((artist) => {
-        //console.log(artist, currentArtist);
+    },
+    deleteFanLetter: (state, action) => {
+      const fanLetterDeletedArtists = state.map((artist) => {
         if (artist.id === action.payload.currentArtistId) {
           console.log(artist);
           return {
@@ -91,9 +70,10 @@ const artistsReducer = (state = artists, action) => {
       saveLocalStorage("artists", fanLetterDeletedArtists);
 
       return fanLetterDeletedArtists;
-    default:
-      return state;
-  }
-};
+    },
+  },
+});
 
-export default artistsReducer;
+export const { addFanLetter, editFanLetter, deleteFanLetter } =
+  artistsSlice.actions;
+export default artistsSlice.reducer;

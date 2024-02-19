@@ -4,14 +4,12 @@ import { StyledFanLetterDetailContainer } from "./FanLetterDetail.styled";
 import FanLetterDetailCard from "components/FanLetterDetailCard";
 import CustomModal from "components/CustomModal";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteFanLetter,
-  editFanLetter,
-} from "../../redux/modules/artistsReducer";
+import { deleteFanLetter, editFanLetter } from "../../redux/modules/artists";
 
 const FanLetterDetail = () => {
   const navigate = useNavigate();
-  const artists = useSelector((state) => state.artistsReducer);
+  const artists = useSelector((state) => state.artists);
+
   const dispatch = useDispatch();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -51,7 +49,13 @@ const FanLetterDetail = () => {
       setIsEditModalOpen(false);
       return;
     }
-    dispatch(editFanLetter(currentArtist.id, fanLetterId, letterContent));
+    dispatch(
+      editFanLetter({
+        currentArtistId: currentArtist.id,
+        fanLetterId: fanLetterId,
+        content: letterContent,
+      })
+    );
 
     navigate(`/fanletter?search=${currentArtist.name}`);
   }, [
@@ -64,7 +68,12 @@ const FanLetterDetail = () => {
   ]);
 
   const handleDelete = useCallback(() => {
-    dispatch(deleteFanLetter(currentArtist.id, fanLetterId));
+    dispatch(
+      deleteFanLetter({
+        currentArtistId: currentArtist.id,
+        fanLetterId: fanLetterId,
+      })
+    );
     navigate(`/fanletter?search=${currentArtist.name}`);
   }, [currentArtist, dispatch, fanLetterId, navigate]);
 

@@ -1,10 +1,8 @@
-import { createStore } from "redux";
-import { combineReducers } from "redux";
-import artistsReducer from "../modules/artistsReducer.js";
-const rootReducer = combineReducers({
-  artistsReducer,
-});
+import { configureStore } from "@reduxjs/toolkit";
+import artists from "../modules/artists.js";
 
-const store = createStore(rootReducer);
+const store = configureStore({
+  reducer: { artists: artists },
+});
 
 export default store;
