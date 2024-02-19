@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import { datas } from "../../shared/artists";
 import { StyledArtistList, StyledIntro } from "./Home.styled";
+import { useSelector } from "react-redux";
 
 const Home = () => {
+  const userInfo = useSelector((state) => state.user);
+  console.log(userInfo);
   return (
     <>
       <StyledIntro>

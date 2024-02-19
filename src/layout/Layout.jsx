@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link, Outlet } from "react-router-dom";
 import styled from "styled-components";
 
@@ -36,20 +37,24 @@ const StyledFooter = styled.footer`
 
 const StyledLoginWrap = styled.div``;
 const Layout = ({ children, setSelectedMember }) => {
+  const userInfo = useSelector((state) => state.user);
   return (
     <StyledLayout>
       <StyledHeader>
         <Link to="/" onClick={() => setSelectedMember("")}>
           Fan Letter
         </Link>
-        <StyledLoginWrap>
-          <Link to="/signIn" onClick={() => setSelectedMember("")}>
-            로그인/
-          </Link>
-          <Link to="/signUp" onClick={() => setSelectedMember("")}>
-            회원가입
-          </Link>
-        </StyledLoginWrap>
+        {!userInfo && (
+          <StyledLoginWrap>
+            <Link to="/signin" onClick={() => setSelectedMember("")}>
+              로그인/
+            </Link>
+            <Link to="/signup" onClick={() => setSelectedMember("")}>
+              회원가입
+            </Link>
+          </StyledLoginWrap>
+        )}
+        {userInfo && <Link to="profile">프로필</Link>}
       </StyledHeader>
       <Outlet />
       <StyledFooter>© SSAL COMPANY</StyledFooter>
