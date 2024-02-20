@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const artistsApi = axios.create({
-  baseURL: "http://localhost:3001",
+  baseURL: "https://plausible-aquamarine-midnight.glitch.me/",
 });
 
 export default artistsApi;

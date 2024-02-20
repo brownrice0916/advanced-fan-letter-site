@@ -2,6 +2,7 @@ import { StyledFanLetterDetailCard } from "pages/FanLetterDetail/FanLetterDetail
 import React, { useEffect, useRef } from "react";
 import Avatar from "./Avatar";
 import CustomButton from "./CustomButton";
+import { useSelector } from "react-redux";
 
 const FanLetterDetailCard = ({
   currentLetter,
@@ -28,6 +29,8 @@ const FanLetterDetailCard = ({
     }
   }, [textAreaRef, letterContent.length, isEditModalOpen, isEditing]);
 
+  const { user } = useSelector((state) => state.user);
+
   return (
     <StyledFanLetterDetailCard>
       <div className="writer_wrap">
@@ -53,11 +56,15 @@ const FanLetterDetailCard = ({
           }}
         ></textarea>
       )}
-      <div className="btn_wrap">
-        {!isEditing && <CustomButton onClick={openDeleteModal} name="삭제" />}
-        {!isEditing && <CustomButton onClick={handleEdit} name="수정" />}
-        {isEditing && <CustomButton onClick={openEditModal} name="수정완료" />}
-      </div>
+      {currentLetter.userId === user.id && (
+        <div className="btn_wrap">
+          {!isEditing && <CustomButton onClick={openDeleteModal} name="삭제" />}
+          {!isEditing && <CustomButton onClick={handleEdit} name="수정" />}
+          {isEditing && (
+            <CustomButton onClick={openEditModal} name="수정완료" />
+          )}
+        </div>
+      )}
     </StyledFanLetterDetailCard>
   );
 };

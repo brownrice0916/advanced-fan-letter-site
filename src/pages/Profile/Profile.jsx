@@ -1,15 +1,29 @@
-import authApi from "../../axios/authApi";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  __updateProfile,
-  updateProfile,
-  updateUserInfo,
-} from "../../redux/modules/auth";
+import { __updateProfile } from "../../redux/modules/auth";
+import styled from "styled-components";
 
+const StyledProfileContainer = styled.div`
+  width: 500px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 15px;
+
+  h1 {
+    font-size: 2rem;
+    text-align: center;
+  }
+  img {
+    width: 100px;
+  }
+`;
 const Profile = () => {
-  // const userInfo = useSelector((state) => state.user);
-  const { user, isLoading, error } = useSelector((state) => state.user);
+  const { user, error } = useSelector((state) => state.user);
   const [imageUrl, setImageUrl] = useState(user?.avatar);
   const [nickname, setNickname] = useState(user?.nickname);
   const [file, setFile] = useState(null);
@@ -36,60 +50,39 @@ const Profile = () => {
     formData.append("nickname", nickname);
 
     dispatch(__updateProfile(formData));
-    // try {
-    //   const response = await authApi.patch("/profile", formData, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //       Authorization: `Bearer ${user.accessToken}`,
-    //     },
-    //   });
-    //   console.log(response);
-
-    //   const { avatar, nickname: updatedNickName } = response.data;
-
-    //   const profileToUpdate = {
-    //     nickname: updatedNickName,
-    //   };
-
-    //   if (avatar) {
-    //     profileToUpdate.avatar = avatar;
-    //   }
-
-    //   dispatch(__updateProfile(profileToUpdate));
-
-    //   //   dispatch(updateProfile({
-    //   //     nickname: updatedNickName,
-    //   //     ...(avatar && { avatar })
-    //   //   }));
-
-    //   if (avatar) {
-    //     setImageUrl(avatar);
-    //   }
-
-    //   setNickname("");
-    // } catch (error) {
-    //   console.log(error);
-    // }
   };
 
   const handleNicknameChange = (e) => {
     setNickname(e.target.value);
   };
 
+  useEffect(() => {
+    if (error) {
+      alert(error.message);
+    }
+  }, [error]);
+
   return (
-    <div>
+    <StyledProfileContainer>
       <h1>프로필관리</h1>
 
-      <img src={imageUrl} alt="profile" />
-      <input
-        type="file"
-        onChange={handleImageChange}
-        name="profileInput"
-        accept="image/*"
-      />
-      <input onChange={handleNicknameChange} value={nickname} />
-      <button onClick={handleProfile}>완료</button>
-    </div>
+      <div>
+        <img src={imageUrl} alt="profile" />
+      </div>
+      <div>
+        <input
+          className="fileInput"
+          type="file"
+          onChange={handleImageChange}
+          name="profileInput"
+          accept="image/*"
+        />
+      </div>
+      <div>
+        <input onChange={handleNicknameChange} value={nickname} />
+        <button onClick={handleProfile}>완료</button>
+      </div>
+    </StyledProfileContainer>
   );
 };
 

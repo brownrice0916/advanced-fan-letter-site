@@ -7,8 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   __deleteFanLetter,
   __editFanLetter,
-  deleteFanLetter,
-  editFanLetter,
 } from "../../redux/modules/artists";
 
 const FanLetterDetail = () => {

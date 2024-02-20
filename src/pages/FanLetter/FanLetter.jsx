@@ -5,11 +5,10 @@ import FanLetterForm from "components/FanLetterForm";
 import FanLetterCard from "components/FanLetterCard";
 import MembersProfile from "components/MembersProfile";
 import { useDispatch, useSelector } from "react-redux";
-import { __addFanLetter, addFanLetter } from "../../redux/modules/artists";
+import { __addFanLetter } from "../../redux/modules/artists";
 
 const FanLetter = ({ selectedMemberId, setSelectedMemberId }) => {
-  const { artists, isLoading, error } = useSelector((state) => state.artists);
-  console.log("artists", artists);
+  const { artists } = useSelector((state) => state.artists);
   const dispatch = useDispatch();
 
   const location = useLocation();
@@ -46,26 +45,19 @@ const FanLetter = ({ selectedMemberId, setSelectedMemberId }) => {
         return;
       }
 
-      // dispatch(
-      //   addFanLetter({
-      //     currentArtistId: currentArtist.id,
-      //     nickname: nickname,
-      //     content: content,
-      //     writedTo: selectedMember?.name ?? "",
-      //   })
-      // );
       dispatch(
         __addFanLetter({
           currentArtistId: currentArtist.id,
           nickname: nickname,
           content: content,
           writedTo: selectedMember?.name ?? "",
+          userId: user ? user.id : "",
         })
       );
 
       e.target.content.value = "";
     },
-    [currentArtist, dispatch, selectedMember]
+    [currentArtist, dispatch, selectedMember, user]
   );
 
   return (

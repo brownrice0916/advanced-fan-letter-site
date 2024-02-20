@@ -3,10 +3,8 @@ import { StyledArtistList, StyledIntro } from "./Home.styled";
 import { useSelector } from "react-redux";
 
 const Home = () => {
-  const userInfo = useSelector((state) => state.user);
   const { isLoading, error, artists } = useSelector((state) => state.artists);
-  console.log(artists);
-
+  const { user } = useSelector((state) => state.user);
   if (isLoading) {
     return <div>loading</div>;
   }
@@ -24,7 +22,7 @@ const Home = () => {
           {artists &&
             artists.map((item) => (
               <li key={item.id}>
-                <Link to={`/fanletter?search=${item.name}`}>
+                <Link to={user ? `/fanletter?search=${item.name}` : `/signin`}>
                   <div>
                     <img src={item.img} alt="뉴진스" />
                   </div>

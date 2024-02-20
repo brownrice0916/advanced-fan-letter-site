@@ -71,6 +71,9 @@ export const StyledForm = styled.form`
     margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
+    p {
+      flex: 3;
+    }
     label {
       flex: 1;
     }
