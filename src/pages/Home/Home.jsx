@@ -1,8 +1,16 @@
 import { Link } from "react-router-dom";
-import { datas } from "../../shared/artists";
 import { StyledArtistList, StyledIntro } from "./Home.styled";
+import { useSelector } from "react-redux";
 
 const Home = () => {
+  const { isLoading, error, artists } = useSelector((state) => state.artists);
+  const { user } = useSelector((state) => state.user);
+  if (isLoading) {
+    return <div>loading</div>;
+  }
+  if (error) {
+    return <div>error</div>;
+  }
   return (
     <>
       <StyledIntro>
@@ -11,16 +19,17 @@ const Home = () => {
       <StyledArtistList>
         <h1>Artists</h1>
         <ul>
-          {datas.map((item) => (
-            <li key={item.id}>
-              <Link to={`/fanletter?search=${item.name}`}>
-                <div>
-                  <img src={item.img} alt="뉴진스" />
-                </div>
-                <p>{item.name}</p>
-              </Link>
-            </li>
-          ))}
+          {artists &&
+            artists.map((item) => (
+              <li key={item.id}>
+                <Link to={user ? `/fanletter?search=${item.name}` : `/signin`}>
+                  <div>
+                    <img src={item.img} alt="뉴진스" />
+                  </div>
+                  <p>{item.name}</p>
+                </Link>
+              </li>
+            ))}
         </ul>
       </StyledArtistList>
     </>

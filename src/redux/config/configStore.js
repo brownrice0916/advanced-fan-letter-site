@@ -1,10 +1,9 @@
-import { createStore } from "redux";
-import { combineReducers } from "redux";
-import artistsReducer from "../modules/artistsReducer.js";
-const rootReducer = combineReducers({
-  artistsReducer,
-});
+import { configureStore } from "@reduxjs/toolkit";
+import artists from "../modules/artists.js";
+import user from "../modules/auth.js";
 
-const store = createStore(rootReducer);
+const store = configureStore({
+  reducer: { artists: artists, user: user },
+});
 
 export default store;

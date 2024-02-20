@@ -1,6 +1,7 @@
 import React from "react";
 import { StyledForm } from "pages/FanLetter/FanLetter.styled";
 import CustomButton from "./CustomButton";
+import { useSelector } from "react-redux";
 
 const FanLetterForm = ({
   handleSubmit,
@@ -8,6 +9,7 @@ const FanLetterForm = ({
   selectedMember,
   setSelectedMemberId,
 }) => {
+  const { user } = useSelector((state) => state.user);
   return (
     <StyledForm
       onSubmit={(e) => {
@@ -16,12 +18,13 @@ const FanLetterForm = ({
     >
       <div className="inputWrap">
         <label>닉네임:</label>
-        <input
+        {/* <input
           placeholder="최대 20글자까지 작성할 수 있습니다."
           maxLength={20}
           type="text"
           name="nickname"
-        />
+        /> */}
+        <p>{user && user.nickname}</p>
       </div>
       <div className="inputWrap">
         <label>내용:</label>
