@@ -5,10 +5,10 @@ import FanLetterForm from "components/FanLetterForm";
 import FanLetterCard from "components/FanLetterCard";
 import MembersProfile from "components/MembersProfile";
 import { useDispatch, useSelector } from "react-redux";
-import { addFanLetter } from "../../redux/modules/artists";
+import { __addFanLetter, addFanLetter } from "../../redux/modules/artists";
 
 const FanLetter = ({ selectedMemberId, setSelectedMemberId }) => {
-  const artists = useSelector((state) => state.artists);
+  const { artists, isLoading, error } = useSelector((state) => state.artists);
   console.log("artists", artists);
   const dispatch = useDispatch();
 
@@ -20,6 +20,8 @@ const FanLetter = ({ selectedMemberId, setSelectedMemberId }) => {
     () => artists.find((item) => item.name === artistName),
     [artists, artistName]
   );
+
+  const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
     // fanLetter page 진입 시 selectedMemberId 초기화
@@ -36,7 +38,7 @@ const FanLetter = ({ selectedMemberId, setSelectedMemberId }) => {
     (e) => {
       e.preventDefault();
 
-      const nickname = e.target.nickname.value;
+      const nickname = user ? user.nickname : "익명";
       const content = e.target.content.value;
 
       if (nickname === "" || content === "") {
@@ -44,8 +46,16 @@ const FanLetter = ({ selectedMemberId, setSelectedMemberId }) => {
         return;
       }
 
+      // dispatch(
+      //   addFanLetter({
+      //     currentArtistId: currentArtist.id,
+      //     nickname: nickname,
+      //     content: content,
+      //     writedTo: selectedMember?.name ?? "",
+      //   })
+      // );
       dispatch(
-        addFanLetter({
+        __addFanLetter({
           currentArtistId: currentArtist.id,
           nickname: nickname,
           content: content,
@@ -53,7 +63,6 @@ const FanLetter = ({ selectedMemberId, setSelectedMemberId }) => {
         })
       );
 
-      e.target.nickname.value = "";
       e.target.content.value = "";
     },
     [currentArtist, dispatch, selectedMember]

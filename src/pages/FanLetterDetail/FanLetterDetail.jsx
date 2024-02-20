@@ -4,11 +4,16 @@ import { StyledFanLetterDetailContainer } from "./FanLetterDetail.styled";
 import FanLetterDetailCard from "components/FanLetterDetailCard";
 import CustomModal from "components/CustomModal";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteFanLetter, editFanLetter } from "../../redux/modules/artists";
+import {
+  __deleteFanLetter,
+  __editFanLetter,
+  deleteFanLetter,
+  editFanLetter,
+} from "../../redux/modules/artists";
 
 const FanLetterDetail = () => {
   const navigate = useNavigate();
-  const artists = useSelector((state) => state.artists);
+  const { artists } = useSelector((state) => state.artists);
 
   const dispatch = useDispatch();
 
@@ -50,7 +55,7 @@ const FanLetterDetail = () => {
       return;
     }
     dispatch(
-      editFanLetter({
+      __editFanLetter({
         currentArtistId: currentArtist.id,
         fanLetterId: fanLetterId,
         content: letterContent,
@@ -69,7 +74,7 @@ const FanLetterDetail = () => {
 
   const handleDelete = useCallback(() => {
     dispatch(
-      deleteFanLetter({
+      __deleteFanLetter({
         currentArtistId: currentArtist.id,
         fanLetterId: fanLetterId,
       })

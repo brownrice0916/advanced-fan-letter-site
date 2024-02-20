@@ -1,6 +1,7 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { Link, Outlet } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { resetUser } from "../redux/modules/auth";
 import styled from "styled-components";
 
 const StyledLayout = styled.div`
@@ -37,14 +38,17 @@ const StyledFooter = styled.footer`
 
 const StyledLoginWrap = styled.div``;
 const Layout = ({ children, setSelectedMember }) => {
-  const userInfo = useSelector((state) => state.user);
+  const { user, isLoading, error } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   return (
     <StyledLayout>
       <StyledHeader>
         <Link to="/" onClick={() => setSelectedMember("")}>
           Fan Letter
         </Link>
-        {!userInfo && (
+        {!user && (
           <StyledLoginWrap>
             <Link to="/signin" onClick={() => setSelectedMember("")}>
               로그인/
@@ -54,7 +58,18 @@ const Layout = ({ children, setSelectedMember }) => {
             </Link>
           </StyledLoginWrap>
         )}
-        {userInfo && <Link to="profile">프로필</Link>}
+        {user && (
+          <div>
+            <Link to="profile">프로필</Link>
+            <button
+              onClick={() => {
+                dispatch(resetUser());
+              }}
+            >
+              로그아웃
+            </button>
+          </div>
+        )}
       </StyledHeader>
       <Outlet />
       <StyledFooter>© SSAL COMPANY</StyledFooter>

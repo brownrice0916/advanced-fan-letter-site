@@ -11,43 +11,51 @@ import SignUp from "pages/SignUp/SignUp";
 import Profile from "pages/Profile/Profile";
 import { useDispatch, useSelector } from "react-redux";
 import authApi from "../axios/authApi";
-import { setUserInfo } from "../redux/modules/auth";
+import { __getUser, setUserInfo } from "../redux/modules/auth";
+import { __getArtists } from "../redux/modules/artists";
 
 const Router = () => {
   const [selectedMemberId, setSelectedMemberId] = useState();
-  const userInfo = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const { isLoading, error, artists } = useSelector((state) => state.artists);
+  useEffect(() => {
+    console.log("user in router", user);
+  }, [user]);
 
   useEffect(() => {
-    console.log(userInfo);
-  }, [userInfo]);
+    console.log("get Artists");
+    dispatch(__getArtists());
+  }, [dispatch]);
 
   useEffect(() => {
-    if (!getLocalStorage("artists")) {
-      saveLocalStorage("artists", datas);
+    console.log("artist in router", artists);
+    if (artists) {
+      saveLocalStorage("artists", artists);
     }
-  }, []);
+  }, [artists]);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await authApi.get("/user", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getLocalStorage("accessToken")}`,
-          },
-        });
-        console.log("getUser", response.data);
-        const { success, ...user } = response.data;
-        dispatch(setUserInfo(user));
-      } catch (error) {
-        //console.log(error);
-      }
-    };
+    // const fetchUser = async () => {
+    //   try {
+    //     const response = await authApi.get("/user", {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ${getLocalStorage("accessToken")}`,
+    //       },
+    //     });
+    //     console.log("getUser", response.data);
+    //     const { success, ...user } = response.data;
+    //     dispatch(setUserInfo(user));
+    //   } catch (error) {
+    //     //console.log(error);
+    //   }
+    // };
 
     console.log("accessToken in router", getLocalStorage("accessToken"));
     if (getLocalStorage("accessToken")) {
-      fetchUser();
+      __getUser(getLocalStorage("accessToken"));
+      // fetchUser();
     }
   }, [dispatch]);
 
