@@ -1,13 +1,8 @@
 import styled from "styled-components";
 
 export const StyledFanLetterDetailContainer = styled.section`
-  //display: flex;
-  //justify-content: center;
-  //align-items: center;
-  // margin: 0 auto;
   padding: 20px;
   position: relative;
-  //position: relative;
 `;
 
 export const StyledFanLetterDetailCard = styled.div`
@@ -15,7 +10,6 @@ export const StyledFanLetterDetailCard = styled.div`
   min-height: 500px;
   width: 600px;
   padding: 20px;
-  //transform: translateY(-50%);
   background-color: #fff;
   border: 1px solid black;
   border-radius: 20px;

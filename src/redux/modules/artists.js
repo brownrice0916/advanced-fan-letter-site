@@ -31,7 +31,6 @@ export const __addFanLetter = createAsyncThunk(
         `artists/${payload.currentArtistId}`
       );
       const prevFanLetters = currentResponse.data.fanLetters;
-      console.log("fanletters", prevFanLetters);
       const newFanLetter = {
         avatar: payload.avatar ? payload.avatar : "",
         nickname: payload.nickname,
@@ -101,7 +100,6 @@ export const __deleteFanLetter = createAsyncThunk(
           fanLetters: newFanLetters,
         }
       );
-      console.log("newFanLetters in artists", newFanLetters);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -131,8 +129,6 @@ const artistsSlice = createSlice({
       })
       .addCase(__addFanLetter.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log("action payload", action.payload);
-        console.log(state);
         state.artists = state.artists.map((artist) => {
           if (artist.id === action.payload.id) {
             return action.payload;
@@ -149,8 +145,6 @@ const artistsSlice = createSlice({
       })
       .addCase(__editFanLetter.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log("action payload", action.payload);
-        console.log(state);
         state.artists = state.artists.map((artist) => {
           if (artist.id === action.payload.id) {
             return action.payload;
