@@ -5,6 +5,11 @@ import {
   removeLocalStorage,
   setLocalStorage,
 } from "common/common";
+import {
+  LOGIN_ENDPOINT,
+  PROFILE_ENDPOINT,
+  USER_ENDPOINT,
+} from "constants/userConstants";
 
 const initialState = {
   user: null,
@@ -17,7 +22,7 @@ export const __getUser = createAsyncThunk(
   "getUser",
   async (payload, thunkAPI) => {
     try {
-      const response = await authApi.get("/user", {
+      const response = await authApi.get(USER_ENDPOINT, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${payload}`,
@@ -37,7 +42,7 @@ export const __signInUser = createAsyncThunk(
   "signInUser",
   async (payload, thunkAPI) => {
     try {
-      const response = await authApi.post("/login", payload);
+      const response = await authApi.post(LOGIN_ENDPOINT, payload);
 
       const { success, ...userInfoFromServer } = response.data;
       setLocalStorage("accessToken", response.data.accessToken);
@@ -52,7 +57,7 @@ export const __updateProfile = createAsyncThunk(
   "updateProfile",
   async (payload, thunkAPI) => {
     try {
-      const response = await authApi.patch("/profile", payload, {
+      const response = await authApi.patch(PROFILE_ENDPOINT, payload, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${getLocalStorage("accessToken")}`,
