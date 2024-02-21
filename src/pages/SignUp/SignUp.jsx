@@ -12,10 +12,10 @@ const SignUp = () => {
         password: pw,
         nickname: nickname,
       });
-      console.log(response.data);
-
       navigate("/signin");
-    } catch (error) {}
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return <SignForm handleSignUp={handleSignUp} />;

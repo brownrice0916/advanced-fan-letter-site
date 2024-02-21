@@ -27,7 +27,6 @@ export const __getUser = createAsyncThunk(
       return thunkAPI.fulfillWithValue(user);
       //   dispatch(setUserInfo(user));
     } catch (error) {
-      console.log("error", error);
       removeLocalStorage("accessToken");
       return thunkAPI.rejectWithValue(error);
     }
@@ -38,15 +37,12 @@ export const __signInUser = createAsyncThunk(
   "signInUser",
   async (payload, thunkAPI) => {
     try {
-      console.log("payload", payload);
       const response = await authApi.post("/login", payload);
-      console.log(response.data);
 
       const { success, ...userInfoFromServer } = response.data;
       setLocalStorage("accessToken", response.data.accessToken);
       return thunkAPI.fulfillWithValue(userInfoFromServer);
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -71,7 +67,6 @@ export const __updateProfile = createAsyncThunk(
       }
       return thunkAPI.fulfillWithValue(profileToUpdate);
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -118,7 +113,6 @@ const userSlice = createSlice({
       })
       .addCase(__updateProfile.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log("payload", action.payload);
         state.user.nickname = action.payload.nickname;
         state.user.avatar = action.payload.avatar
           ? action.payload.avatar

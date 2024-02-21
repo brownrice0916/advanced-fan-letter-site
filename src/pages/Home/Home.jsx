@@ -1,16 +1,22 @@
 import { Link } from "react-router-dom";
 import { StyledArtistList, StyledIntro } from "./Home.styled";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const Home = () => {
   const { isLoading, error, artists } = useSelector((state) => state.artists);
   const { user } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (error) {
+      alert(error);
+    }
+  }, [error]);
+
   if (isLoading) {
     return <div>loading</div>;
   }
-  if (error) {
-    return <div>error</div>;
-  }
+
   return (
     <>
       <StyledIntro>

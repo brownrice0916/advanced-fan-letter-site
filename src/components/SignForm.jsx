@@ -1,47 +1,5 @@
-import axios from "axios";
-import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-
-const StyledSignInWrapper = styled.div`
-  width: 500px;
-  margin: 0 auto;
-  padding: 20px;
-  text-align: center;
-  border: 1px solid #ccc;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  font-size: 1.2rem;
-  h1 {
-    font-size: 2rem;
-  }
-  form {
-    display: flex;
-    gap: 20px;
-    flex-direction: column;
-    div {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      input {
-        width: 80%;
-        height: 40px;
-      }
-    }
-  }
-  .formBtn {
-    background-color: #222;
-    color: #fff;
-    border: none;
-    padding: 20px;
-    font-size: 1.2rem;
-    cursor: pointer;
-  }
-  .linkBtn {
-    cursor: pointer;
-  }
-`;
 
 const SignForm = ({ handleSignUp, handleSignIn }) => {
   const { pathname } = useLocation();
@@ -50,10 +8,19 @@ const SignForm = ({ handleSignUp, handleSignIn }) => {
     const id = e.target.id.value;
     const password = e.target.password.value;
 
+    if (id.length < 4 || password.length < 4) {
+      alert("id 혹은 password는 4자 이상 입력해 주세요.");
+      return;
+    }
+
     if (pathname === "/signin") {
       handleSignIn(id, password);
     } else {
       const nickname = e.target.nickname.value;
+      if (nickname.length < 1) {
+        alert("닉네임은 1자 이상 입력해 주세요.");
+        return;
+      }
       handleSignUp(id, password, nickname);
     }
   };
@@ -112,3 +79,44 @@ const SignForm = ({ handleSignUp, handleSignIn }) => {
 };
 
 export default SignForm;
+
+const StyledSignInWrapper = styled.div`
+  width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 1.2rem;
+  h1 {
+    font-size: 2rem;
+  }
+  form {
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      input {
+        width: 80%;
+        height: 40px;
+      }
+    }
+  }
+  .formBtn {
+    background-color: #222;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  .linkBtn {
+    cursor: pointer;
+  }
+`;

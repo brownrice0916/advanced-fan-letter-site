@@ -1,9 +1,7 @@
-import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import { __getUser, resetUser } from "../redux/modules/auth";
+import { Link, Outlet } from "react-router-dom";
+import { resetUser } from "../redux/modules/auth";
 import styled from "styled-components";
-import { getLocalStorage } from "common/common";
 
 const Layout = ({ setSelectedMember }) => {
   const { user } = useSelector((state) => state.user);
